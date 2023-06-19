@@ -9,7 +9,7 @@ const Navbar = () => {
   const [userMenu, setUserMenu] = useState(false);
 
   return (
-    <header className="py-4 h-24  mx-auto    flex justify-between">
+    <header className="py-4 h-24 flex justify-between">
       <Link to={"/"} className="md:flex-1 hidden md:flex items-center">
         <img src={logo} className="h-14 flex-nowrap  " alt="logo" />
       </Link>

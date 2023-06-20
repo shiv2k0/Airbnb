@@ -13,7 +13,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const [userMenu, setUserMenu] = useState(false);
   const user = useSelector(selectUser);
-  console.log(user);
+  // console.log(user);
   const SignOut = async () => {
     await axios.post("/api/logout");
     dispatch(logout());
@@ -55,7 +55,7 @@ const Navbar = () => {
               {user ? (
                 <>
                   <Link
-                    to={"/account"}
+                    to={"/account/"}
                     className="px-3 py-[1px] hover:bg-gray-100 cursor-pointer"
                   >
                     Account

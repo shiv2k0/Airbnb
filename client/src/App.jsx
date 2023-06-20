@@ -6,8 +6,8 @@ import Register from "./pages/Register";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login, selectUser } from "./features/user/userSlice";
-import Account from "./pages/AccountPage";
+import { login, logout, selectUser } from "./features/user/userSlice";
+import AccountPage from "./pages/AccountPage";
 import IndexPage from "./components/IndexPage";
 
 axios.defaults.baseURL = "http://localhost:8080";
@@ -24,10 +24,7 @@ function App() {
       axios.get("/api/profile").then(({ data }) => {
         dispatch(login(data));
         setLoading(false);
-        // console.log(data);
       });
-    } else {
-      dispatch(logout());
     }
   }, []);
 
@@ -38,7 +35,8 @@ function App() {
           <Route index path="/" element={<IndexPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/account" element={<Account />} />
+          <Route path="/account/:subpage?" element={<AccountPage />} />
+          <Route path="/account/:subpage/:action" element={<AccountPage />} />
         </Route>
       </Routes>
     </>

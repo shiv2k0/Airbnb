@@ -3,7 +3,7 @@ import Navbar from "./Navbar";
 
 const Layout = () => {
   return (
-    <div className="px-6 flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen">
       <Navbar />
       <Outlet />
     </div>

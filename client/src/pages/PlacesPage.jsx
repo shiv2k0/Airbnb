@@ -1,32 +1,20 @@
 import { Link, useParams } from "react-router-dom";
-import { BiUpload } from "react-icons/bi";
 import { useState } from "react";
 import Perks from "../components/Perks";
-import axios from "axios";
+import PhotoUploader from "../components/PhotoUploader";
 
 const PlacesPage = () => {
   const { action } = useParams();
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
   const [addedPhotos, setAddedPhotos] = useState([]);
-  const [photoLink, setPhotoLink] = useState("");
+
   const [description, setDescription] = useState("");
   const [perks, setPerks] = useState([]);
   const [extraInfo, setExtraInfo] = useState("");
   const [checkIn, setCheckIn] = useState("");
   const [checkout, setCheckout] = useState("");
   const [maxGuests, setMaxGuests] = useState(2);
-
-  const addPhotoByLink = async (e) => {
-    e.preventDefault();
-    const { data: filename } = await axios.post("/api/upload-by-link", {
-      link: photoLink,
-    });
-    setAddedPhotos((prev) => {
-      return [...prev, filename];
-    });
-    setPhotoLink("");
-  };
 
   const inputHeader = (header, description) => {
     return (
@@ -36,6 +24,7 @@ const PlacesPage = () => {
       </>
     );
   };
+
   return (
     <div>
       {action === "new" ? (
@@ -59,7 +48,11 @@ const PlacesPage = () => {
               placeholder="address"
             />
             {inputHeader("Photos", "more = better")}
-            <div className="flex gap-4  ">
+            <PhotoUploader
+              addedPhotos={addedPhotos}
+              onChange={setAddedPhotos}
+            />
+            {/* <div className="flex gap-4  ">
               <input
                 value={photoLink}
                 onChange={(e) => setPhotoLink(e.target.value)}
@@ -76,18 +69,19 @@ const PlacesPage = () => {
             <div className=" mt-2 grid gap-2 grid-cols-3 lg:grid-cols-6 md:grid-cols-4  ">
               {addedPhotos.length > 0 &&
                 addedPhotos.map((link) => (
-                  <div>
+                  <div className="h-32 flex" key={link}>
                     <img
-                      className="rounded-2xl"
+                      className="rounded-2xl w-full object-cover "
                       src={`http://localhost:8080/uploads/${link}`}
                       alt=""
                     />
                   </div>
                 ))}
-              <button className="border bg-transparent rounded-2xl p-8 text-2xl flex text-gray-600 gap-2 items-center justify-center ">
+              <label className="cursor-pointer border bg-transparent rounded-2xl p-8 text-2xl flex text-gray-600 gap-2 items-center justify-center ">
+                <input type="file" className="hidden" onChange={uploadPhoto} />
                 <BiUpload size={20} /> <span className="text-sm">Upload</span>
-              </button>
-            </div>
+              </label>
+            </div> */}
             {inputHeader("Description", "description of the place")}
             <textarea
               value={description}

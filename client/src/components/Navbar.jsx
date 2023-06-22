@@ -55,7 +55,7 @@ const Navbar = () => {
               {user ? (
                 <>
                   <Link
-                    to={"/account/"}
+                    to={"/account/profile"}
                     className="px-3 py-[1px] hover:bg-gray-100 cursor-pointer"
                   >
                     Account

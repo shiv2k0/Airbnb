@@ -9,6 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { login, logout, selectUser } from "./features/user/userSlice";
 import AccountPage from "./pages/AccountPage";
 import IndexPage from "./components/IndexPage";
+import PlacesPage from "./pages/PlacesPage";
+import ProfilePage from "./pages/ProfilePage";
+import PlacesFormPage from "./components/PlacesFormPage";
 
 axios.defaults.baseURL = "http://localhost:8080";
 axios.defaults.withCredentials = true;
@@ -35,8 +38,14 @@ function App() {
           <Route index path="/" element={<IndexPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/account/profile" element={<ProfilePage />} />
+          <Route path="/account/bookings" element={<AccountPage />} />
+          <Route path="/account/places" element={<PlacesPage />} />
+          <Route path="/account/places/new" element={<PlacesFormPage />} />
+          <Route path="/account/places/:id" element={<PlacesFormPage />} />
+          {/* <Route path="/account/:subpage?" element={<AccountPage />} />
           <Route path="/account/:subpage?" element={<AccountPage />} />
-          <Route path="/account/:subpage/:action" element={<AccountPage />} />
+          <Route path="/account/:subpage/:action" element={<AccountPage />} /> */}
         </Route>
       </Routes>
     </>

@@ -1,136 +1,23 @@
 import { Link, useParams } from "react-router-dom";
-import { useState } from "react";
-import Perks from "../components/Perks";
-import PhotoUploader from "../components/PhotoUploader";
+import PlacesForm from "../components/PlacesFormPage";
+import AccountNav from "../components/AccountNav";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const PlacesPage = () => {
   const { action } = useParams();
-  const [title, setTitle] = useState("");
-  const [address, setAddress] = useState("");
-  const [addedPhotos, setAddedPhotos] = useState([]);
-
-  const [description, setDescription] = useState("");
-  const [perks, setPerks] = useState([]);
-  const [extraInfo, setExtraInfo] = useState("");
-  const [checkIn, setCheckIn] = useState("");
-  const [checkout, setCheckout] = useState("");
-  const [maxGuests, setMaxGuests] = useState(2);
-
-  const inputHeader = (header, description) => {
-    return (
-      <>
-        <h2 className="text-2xl mt-4">{header}</h2>
-        <p className="text-gray-500 text-sm">{description}</p>
-      </>
-    );
-  };
+  const [places, setPlaces] = useState([]);
+  useEffect(() => {
+    axios.get("/api/places").then(({ data }) => {
+      setPlaces(data);
+    });
+  }, []);
 
   return (
     <div>
+      <AccountNav />
       {action === "new" ? (
-        <div>
-          <form>
-            {inputHeader(
-              "Title",
-              "title for your place. should be short and catchy as in advertisement"
-            )}
-            <input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              type="text"
-              placeholder="title, for example: My lovely appartment"
-            />
-            {inputHeader("Address", "Address to this place")}
-            <input
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              type="text"
-              placeholder="address"
-            />
-            {inputHeader("Photos", "more = better")}
-            <PhotoUploader
-              addedPhotos={addedPhotos}
-              onChange={setAddedPhotos}
-            />
-            {/* <div className="flex gap-4  ">
-              <input
-                value={photoLink}
-                onChange={(e) => setPhotoLink(e.target.value)}
-                type="text"
-                placeholder="Add using a link...."
-              />
-              <button
-                onClick={addPhotoByLink}
-                className="whitespace-nowrap px-4 rounded-md"
-              >
-                Add photo
-              </button>
-            </div>
-            <div className=" mt-2 grid gap-2 grid-cols-3 lg:grid-cols-6 md:grid-cols-4  ">
-              {addedPhotos.length > 0 &&
-                addedPhotos.map((link) => (
-                  <div className="h-32 flex" key={link}>
-                    <img
-                      className="rounded-2xl w-full object-cover "
-                      src={`http://localhost:8080/uploads/${link}`}
-                      alt=""
-                    />
-                  </div>
-                ))}
-              <label className="cursor-pointer border bg-transparent rounded-2xl p-8 text-2xl flex text-gray-600 gap-2 items-center justify-center ">
-                <input type="file" className="hidden" onChange={uploadPhoto} />
-                <BiUpload size={20} /> <span className="text-sm">Upload</span>
-              </label>
-            </div> */}
-            {inputHeader("Description", "description of the place")}
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            {inputHeader("Perks", "description of the place")}
-            <Perks selected={perks} onChange={setPerks} />
-
-            {inputHeader("Extra info", "house rules, etc")}
-            <textarea
-              value={extraInfo}
-              onChange={(e) => setExtraInfo(e.target.value)}
-            />
-            {inputHeader(
-              "Check in & out times , max guests",
-              "add check in and out times, remember to have some time window for cleaning the room between guests"
-            )}
-            <div className="grid sm:grid-cols-3 gap-2">
-              <div>
-                <h3 className="mt-2 -m-1">Check in time</h3>
-                <input
-                  type="text"
-                  value={checkIn}
-                  onChange={(e) => setCheckIn(e.target.value)}
-                  placeholder="14:00"
-                />
-              </div>
-              <div>
-                <h3 className="mt-2 -m-1">Check out time</h3>
-                <input
-                  type="text"
-                  placeholder="11:00"
-                  value={checkout}
-                  onChange={(e) => setCheckout(e.target.value)}
-                />
-              </div>
-              <div>
-                <h3 className="mt-2 -m-1">Max number of guests</h3>
-                <input
-                  type="text"
-                  placeholder="2"
-                  value={maxGuests}
-                  onChange={(e) => setMaxGuests(e.target.value)}
-                />
-              </div>
-            </div>
-            <button className="primary my-4">Save</button>
-          </form>
-        </div>
+        <PlacesForm />
       ) : (
         <div className="text-center">
           <Link
@@ -139,6 +26,29 @@ const PlacesPage = () => {
           >
             <span className="text-xl mr-2">+</span>Add new place
           </Link>
+          <br />
+          <div className="mt-3 text-2xl underline">
+            Lists of all added places
+          </div>
+          {places.map((place) => (
+            <Link
+              to={`/account/places/${place._id}`}
+              key={place._id}
+              className="bg-gray-100 gap-4 p-4 mx-4 max-w-6xl xl:mx-auto rounded-2xl flex cursor-pointer my-4"
+            >
+              <div className="h-32 w-32  bg-gray-200 shrink-0">
+                <img
+                  src={`http://localhost:8080/uploads/${place.photos[0]}`}
+                  className="object-cover rounded-md h-full "
+                  alt=""
+                />
+              </div>
+              <div className="flex flex-col  items-start">
+                <h2 className="text-xl">{place.title}</h2>
+                <p className="text-sm mt-2 text-start">{place.extraInfo}</p>
+              </div>
+            </Link>
+          ))}
         </div>
       )}
     </div>

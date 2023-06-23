@@ -6,6 +6,7 @@ const bcrypt = require("bcryptjs");
 require("dotenv").config();
 const User = require("./models/User.js");
 const Place = require("./models/Place.js");
+const Booking = require("./models/Booking.js");
 const bcryptSalt = bcrypt.genSaltSync(12);
 const jwt = require("jsonwebtoken");
 const imageDownloader = require("image-downloader");
@@ -26,6 +27,15 @@ app.use(
 );
 
 mongoose.connect(process.env.MONGO_URL);
+
+const getUserDataFromToken = (req) => {
+  return new Promise((resolve, reject) => {
+    jwt.verify(req.cookies.token, jwtSecret, {}, async (err, userData) => {
+      if (err) throw err;
+      resolve(userData);
+    });
+  });
+};
 
 app.post("/api/register", async (req, res) => {
   const { name, email, password } = req.body;
@@ -116,6 +126,7 @@ app.post("/api/places", (req, res) => {
     checkIn,
     checkout,
     maxGuests,
+    price,
   } = req.body;
   const { token } = req.cookies;
   if (token) {
@@ -132,13 +143,14 @@ app.post("/api/places", (req, res) => {
         checkIn,
         checkout,
         maxGuests,
+        price,
       });
       res.json(placeDoc);
     });
   }
 });
 
-app.get("/api/places", (req, res) => {
+app.get("/api/user-places", (req, res) => {
   const { token } = req.cookies;
   jwt.verify(token, jwtSecret, {}, async (err, userDoc) => {
     const { id } = userDoc;
@@ -165,6 +177,7 @@ app.put("/api/places", async (req, res) => {
     checkIn,
     checkout,
     maxGuests,
+    price,
   } = req.body;
   const placeDoc = await Place.findById(id);
   jwt.verify(token, jwtSecret, {}, async (err, userData) => {
@@ -179,11 +192,44 @@ app.put("/api/places", async (req, res) => {
         checkIn,
         checkout,
         maxGuests,
+        price,
       });
       await placeDoc.save();
       res.json("ok");
     }
   });
+});
+
+app.get("/api/allplaces", async (req, res) => {
+  res.json(await Place.find());
+});
+
+app.post("/api/booking", async (req, res) => {
+  const userData = await getUserDataFromToken(req);
+
+  const { name, phone, place, checkIn, checkout, guests, price } = req.body;
+  Booking.create({
+    user: userData.id,
+    name,
+    phone,
+    place,
+    checkIn,
+    checkout,
+    guests,
+    price,
+  })
+    .then((doc) => {
+      res.json(doc);
+    })
+    .catch((err) => {
+      throw err;
+    });
+});
+
+app.get("/api/bookings", async (req, res) => {
+  const userData = await getUserDataFromToken(req);
+
+  res.json(await Booking.find({ user: userData.id }).populate("place"));
 });
 
 app.listen(8080);

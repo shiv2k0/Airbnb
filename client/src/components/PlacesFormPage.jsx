@@ -7,7 +7,7 @@ import AccountNav from "./AccountNav";
 
 const PlacesFormPage = () => {
   const { id } = useParams();
-  console.log(id);
+  // console.log(id);
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
@@ -18,6 +18,7 @@ const PlacesFormPage = () => {
   const [checkIn, setCheckIn] = useState("");
   const [checkout, setCheckout] = useState("");
   const [maxGuests, setMaxGuests] = useState(2);
+  const [price, setPrice] = useState(50000);
 
   const inputHeader = (header, description) => {
     return (
@@ -38,6 +39,7 @@ const PlacesFormPage = () => {
     checkIn,
     checkout,
     maxGuests,
+    price,
   };
 
   const savePlave = async (ev) => {
@@ -68,6 +70,7 @@ const PlacesFormPage = () => {
       setCheckIn(data.checkIn);
       setCheckout(data.checkout);
       setMaxGuests(data.maxGuests);
+      setPrice(data.price);
     });
   }, [id]);
   return (
@@ -111,7 +114,7 @@ const PlacesFormPage = () => {
           "Check in & out times , max guests",
           "add check in and out times, remember to have some time window for cleaning the room between guests"
         )}
-        <div className="grid sm:grid-cols-3 gap-2">
+        <div className="grid sm:grid-cols-3 lg:grid-cols-4 gap-2">
           <div>
             <h3 className="mt-2 -m-1">Check in time</h3>
             <input
@@ -137,6 +140,15 @@ const PlacesFormPage = () => {
               placeholder="2"
               value={maxGuests}
               onChange={(e) => setMaxGuests(e.target.value)}
+            />
+          </div>
+          <div>
+            <h3 className="mt-2 -m-1">Price per night ₹</h3>
+            <input
+              type="text"
+              placeholder="2"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
             />
           </div>
         </div>

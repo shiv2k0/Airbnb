@@ -39,9 +39,12 @@ const Navbar = () => {
         </button>
       </div>
       <div className="flex-1 flex items-center gap-5 justify-end">
-        <div className="hidden lg:flex text-sm whitespace-nowrap ml-2">
+        <Link
+          to={"/account/places/new"}
+          className="hidden lg:flex text-sm whitespace-nowrap ml-2"
+        >
           Airbnb your home
-        </div>
+        </Link>
         <BsGlobe size={20} className="ml-2 cursor-pointer" />
         <div
           onClick={() => setUserMenu((prev) => !prev)}
@@ -51,7 +54,7 @@ const Navbar = () => {
           <FaUserCircle size={30} className="" />
           {!!user && <div>{user?.name}</div>}
           {userMenu && (
-            <div className="bg-white text-start p-0 flex flex-col gap-1 text-md justify-center w-56 h-36 absolute top-16 right-0 rounded-md drop-shadow-2xl ">
+            <div className="bg-white text-start p-0 flex flex-col gap-1 text-md justify-center w-56 h-36 absolute top-16 right-0 rounded-md drop-shadow-2xl z-20">
               {user ? (
                 <>
                   <Link
@@ -86,9 +89,12 @@ const Navbar = () => {
 
               <div className="border-b py-[2px]" />
 
-              <div className="px-3 py-[1px] hover:bg-gray-100 cursor-pointer">
+              <Link
+                to={"/account/places/new"}
+                className="px-3 py-[1px] hover:bg-gray-100 cursor-pointer"
+              >
                 Airbnb your house
-              </div>
+              </Link>
               <div className="px-3 py-[1px] hover:bg-gray-100 cursor-pointer">
                 Help
               </div>

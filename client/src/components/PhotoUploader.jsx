@@ -2,6 +2,7 @@ import { BiUpload } from "react-icons/bi";
 import { AiTwotoneDelete, AiFillStar, AiOutlineStar } from "react-icons/ai";
 import axios from "axios";
 import { useState } from "react";
+import Image from "./Image";
 
 const PhotoUploader = ({ addedPhotos, onChange }) => {
   const [photoLink, setPhotoLink] = useState("");
@@ -65,9 +66,14 @@ const PhotoUploader = ({ addedPhotos, onChange }) => {
         {addedPhotos.length > 0 &&
           addedPhotos.map((link) => (
             <div className="h-32 flex relative" key={link}>
+              {/* <Image
+                className="rounded-2xl w-full object-cover"
+                src={link}
+                alt=""
+              /> */}
               <img
                 className="rounded-2xl w-full object-cover "
-                src={`http://localhost:8080/uploads/${link}`}
+                src={`${link}`}
                 alt=""
               />
               <div

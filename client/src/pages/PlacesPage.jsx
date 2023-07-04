@@ -38,7 +38,7 @@ const PlacesPage = () => {
             >
               <div className="h-32 w-32  bg-gray-200 shrink-0">
                 <img
-                  src={`http://localhost:8080/uploads/${place.photos[0]}`}
+                  src={place.photos[0]}
                   className="object-cover rounded-md h-full "
                   alt=""
                 />

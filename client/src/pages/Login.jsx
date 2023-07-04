@@ -12,19 +12,18 @@ const Login = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post("/api/login", { email, password });
+      await axios.post("/api/login", { email, password }).then(({ data }) => {
+        dispatch(
+          login({
+            email: data.email,
+            name: data.name,
+            id: data._id,
+          })
+        );
+      });
       alert("Login successful");
       navigate("/");
-      dispatch(
-        login({
-          email: data.email,
-          name: data.name,
-          id: data._id,
-        })
-      );
-      console.log(data);
     } catch (error) {
-      console.log(error);
       alert("Login failed");
     }
   };
@@ -44,7 +43,7 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="password"
         />
-        <button onClick={onSubmit} className="primary">
+        <button onClick={onSubmit} type="submit" className="primary">
           Login
         </button>
         <div className="text-center  py-2 text-gray-500">

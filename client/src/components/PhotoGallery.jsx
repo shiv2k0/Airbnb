@@ -24,7 +24,7 @@ const PhotoGallery = ({ place }) => {
               <div key={key} className="mx-auto">
                 <img
                   className="max-w-[45rem] sm:w-full w-full"
-                  src={`http://localhost:8080/uploads/${photo}`}
+                  src={photo}
                   alt=""
                 />
               </div>
@@ -40,8 +40,8 @@ const PhotoGallery = ({ place }) => {
           <div className="flex-1">
             <img
               onClick={() => setShowAllPhotos(true)}
-              className=" rounded-l-xl  cursor-pointer hover:opacity-90"
-              src={`http://localhost:8080/uploads/${place.photos[0]}`}
+              className=" rounded-l-xl h-full cursor-pointer hover:opacity-90 object-cover"
+              src={place.photos[0]}
               alt=""
             />
           </div>
@@ -49,28 +49,28 @@ const PhotoGallery = ({ place }) => {
             <div className="flex flex-col gap-2">
               <img
                 onClick={() => setShowAllPhotos(true)}
-                className="flex-1 hover:opacity-90 cursor-pointer"
-                src={`http://localhost:8080/uploads/${place.photos[1]}`}
+                className="flex-1 hover:opacity-90 cursor-pointer object-cover"
+                src={place.photos[1]}
                 alt=""
               />
               <img
                 onClick={() => setShowAllPhotos(true)}
-                className="flex-1 hover:opacity-90 cursor-pointer"
-                src={`http://localhost:8080/uploads/${place.photos[2]}`}
+                className="flex-1 hover:opacity-90 cursor-pointer object-cover"
+                src={place.photos[2]}
                 alt=""
               />
             </div>
             <div className="flex flex-col gap-2">
               <img
                 onClick={() => setShowAllPhotos(true)}
-                className="flex-1 hover:opacity-90 rounded-tr-xl cursor-pointer"
-                src={`http://localhost:8080/uploads/${place.photos[3]}`}
+                className="flex-1 hover:opacity-90 rounded-tr-xl cursor-pointer object-cover"
+                src={place.photos[3]}
                 alt=""
               />
               <img
                 onClick={() => setShowAllPhotos(true)}
-                className="flex-1 hover:opacity-90 rounded-br-xl  cursor-pointer"
-                src={`http://localhost:8080/uploads/${place.photos[4]}`}
+                className="flex-1 hover:opacity-90 rounded-br-xl  cursor-pointer object-cover"
+                src={place.photos[4]}
                 alt=""
               />
             </div>

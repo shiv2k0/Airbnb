@@ -24,7 +24,7 @@ const BookingsPage = () => {
             >
               <img
                 className="w-48 object-cover rounded-l-xl"
-                src={`http://localhost:8080/uploads/${booking?.place?.photos[0]}`}
+                src={booking?.place?.photos[0]}
                 alt=""
               />
               <div className="py-4 grow flex flex-col justify-between">

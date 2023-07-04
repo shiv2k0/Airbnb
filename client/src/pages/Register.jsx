@@ -7,10 +7,10 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const registerUser = (e) => {
+  const registerUser = async (e) => {
     e.preventDefault();
     try {
-      axios.post(`/api/register`, {
+      await axios.post(`/api/register`, {
         name,
         email,
         password,
@@ -18,7 +18,6 @@ const Register = () => {
       alert("Registration successful. You can login.");
       navigate("/login");
     } catch (error) {
-      console.log(error);
       alert("Registration failed. Please try again later");
     }
   };

@@ -20,7 +20,7 @@ const IndexPage = () => {
           <div className="relative">
             {place.photos[0] && (
               <img
-                src={`http://localhost:8080/uploads/${place.photos[0]}`}
+                src={`${place.photos[0]}`}
                 // className="rounded-lg"
                 className="h-60 w-60 object-cover aspect-square rounded-lg"
                 alt=""

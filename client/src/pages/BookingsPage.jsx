@@ -15,19 +15,20 @@ const BookingsPage = () => {
     <div className="mx-8">
       <AccountNav />
       <div>
-        {bookings?.length > 0 &&
+        {bookings?.length > 0 ? (
           bookings.map((booking) => (
             <Link
+              key={booking._id}
               to={`/account/bookings/${booking._id}`}
-              className="flex bg-gray-100   gap-5 rounded-2xl"
+              className="flex bg-gray-100  my-5 gap-5 rounded-2xl"
             >
               <img
                 className="w-48 object-cover rounded-l-xl"
-                src={`http://localhost:8080/uploads/${booking.place.photos[0]}`}
+                src={`http://localhost:8080/uploads/${booking?.place?.photos[0]}`}
                 alt=""
               />
               <div className="py-4 grow flex flex-col justify-between">
-                <h2 className="text-2xl  ">{booking.place.title}</h2>
+                <h2 className="text-2xl  ">{booking?.place?.title}</h2>
                 <div className="border-t py-2 flex items-center text-md gap-5">
                   <div>{format(new Date(booking.checkIn), "yyyy-MM-dd")}</div>
                   <AiOutlineArrowRight />
@@ -52,7 +53,10 @@ const BookingsPage = () => {
                 </div>
               </div>
             </Link>
-          ))}
+          ))
+        ) : (
+          <>No Booking</>
+        )}
       </div>
     </div>
   );

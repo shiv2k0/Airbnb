@@ -2,16 +2,19 @@ import logo from "../assets/logo.png";
 import { AiOutlineSearch, AiOutlineMenu } from "react-icons/ai";
 import { FaUserCircle } from "react-icons/fa";
 import { BsGlobe } from "react-icons/bs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectUser } from "../features/user/userSlice";
 import axios from "axios";
+import { updatePlace } from "../features/places/placesSlice";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [userMenu, setUserMenu] = useState(false);
+  const [keyword, setKeyword] = useState("");
+  const [result, setResult] = useState([]);
   const user = useSelector(selectUser);
   // console.log(user);
   const SignOut = async () => {
@@ -20,6 +23,14 @@ const Navbar = () => {
     navigate("/login");
   };
 
+  useEffect(() => {
+    axios.get(`/api/search?keyword=${keyword}`).then(({ data }) => {
+      dispatch(updatePlace(data.places));
+      setResult(data.places);
+    });
+  }, [keyword]);
+  console.log(result);
+
   return (
     <header className="py-4 px-6 border-b flex items-center justify-between">
       <Link to={"/"} className="md:flex-1 hidden md:flex items-center">
@@ -27,24 +38,35 @@ const Navbar = () => {
       </Link>
 
       <div className="flex-1 flex items-center max-w-[412px] border gap-4 pl-10 pr-3 border-gray-300 rounded-full py-2 h-14  shadow-md">
-        <div className="whitespace-nowrap cursor-pointer">Anywhere</div>
+        <div className="whitespace-nowrap cursor-pointer">Add guests</div>
+
         <div className=" flex-1 border-l  border-gray-300 h-full" />
         <div className="whitespace-nowrap cursor-pointer">Any week</div>
         <div className=" flex-1 border-l  border-gray-300 h-full" />
-        <div className="text-gray-500 cursor-pointer flex-1 w-24 whitespace-nowrap focus:outline-none">
-          Add guests
+        <div className="text-gray-500 cursor-pointer flex-1 w-24 whitespace-nowrap focus:outline-none active:outline-none">
+          <input
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+            className="whitespace-nowrap cursor-pointer bg-transparent w-24 focus:outline-none active:outline-none"
+            placeholder="Anywhere"
+          ></input>
         </div>
-        <button className="h-10 w-10 bg-primary p-2 rounded-full text-white">
+        <button
+          type="submit"
+          className="h-10 w-10 bg-primary p-2 -mx-1 rounded-full text-white"
+        >
           <AiOutlineSearch size={25} />
         </button>
       </div>
       <div className="flex-1 flex items-center gap-5 justify-end">
-        <Link
-          to={"/account/places/new"}
-          className="hidden lg:flex text-sm whitespace-nowrap ml-2"
-        >
-          Airbnb your home
-        </Link>
+        {user && (
+          <Link
+            to={"/account/places/new"}
+            className="hidden lg:flex text-sm whitespace-nowrap ml-2"
+          >
+            Airbnb your home
+          </Link>
+        )}
         <BsGlobe size={20} className="ml-2 cursor-pointer" />
         <div
           onClick={() => setUserMenu((prev) => !prev)}

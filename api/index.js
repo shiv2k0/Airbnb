@@ -15,13 +15,15 @@ const multer = require("multer");
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 const fs = require("fs");
 const mime = require("mime-types");
+const Features = require("./utils/Features.js");
 
 const jwtSecret = process.env.JWT_SECRET;
 const bucket = "shiv-airbnb-clone";
+mongoose.connect(process.env.MONGO_URL);
 
 app.use(express.json());
 app.use(cookieParser());
-app.use("/uploads", express.static(__dirname + "/uploads"));
+// app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(
   cors({
     credentials: true,
@@ -273,6 +275,20 @@ app.get("/api/bookings", async (req, res) => {
   const userData = await getUserDataFromToken(req);
 
   res.json(await Booking.find({ user: userData.id }).populate("place"));
+});
+
+app.get("/api/search", async (req, res) => {
+  const keyword = req.body.keyword;
+  mongoose.connect(process.env.MONGO_URL);
+  const feature = new Features(Place.find(), req.query)
+    .search()
+    .filter()
+    .pagination();
+  const places = await feature.query;
+  res.status(200).json({
+    success: true,
+    places,
+  });
 });
 
 app.listen(8080);

@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectPlaces } from "../features/places/placesSlice";
 
 const IndexPage = () => {
   const [allPlaces, setAllPlaces] = useState([]);
+  const allplaces = useSelector(selectPlaces);
   useEffect(() => {
     axios.get("/api/allplaces").then(({ data }) => {
       setAllPlaces(data);
@@ -11,7 +14,7 @@ const IndexPage = () => {
   }, []);
   return (
     <div className="mx-8 my-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      {allPlaces.map((place) => (
+      {allplaces?.map((place) => (
         <Link
           to={`/places/${place._id}`}
           key={place.title}
